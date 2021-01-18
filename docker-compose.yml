@@ -1,0 +1,32 @@
+version: "3.7"
+
+services:
+  nest_api_backend:
+    container_name: nest_api_backend
+    depends_on:
+      - db_nest_api
+    build: .
+    env_file:
+      - .env
+    ports:
+      - "3000:3000"
+    environment:
+      - DB_URL=mongodb://localhost:27017/nestapi
+    network_mode: host
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+      
+  db_nest_api:
+    image: mongo
+    container_name: db_nest_api
+    network_mode: host
+    env_file:
+      - .env
+    volumes:
+      - mongodata:/data/db
+    ports:
+      - "27017:27017"
+
+volumes:
+  mongodata: 
